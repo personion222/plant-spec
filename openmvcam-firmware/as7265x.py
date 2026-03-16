@@ -1,9 +1,11 @@
 import qwiic_as7265x
+import machine
 import sys
-import pyb
+
+print(qwiic_as7265x.__file__)
 
 def runExample():
-    leds = (pyb.LED(1), pyb.LED(2), pyb.LED(3))
+    leds = (machine.LED("LED_RED"), machine.LED("LED_GREEN"), machine.LED("LED_BLUE"))
     onled = 0
     leds[onled].on()
     print("\nQwiic Spectral Triad Example 1 - Basic\n")

@@ -21,14 +21,14 @@ s2 = Servo(2)  # P8
 time.sleep(3)
 while True:
     for i in range(100):
-        s1.pulse_width(500 + 20 * i)
-        s2.pulse_width(2500 - 20 * i)
+        s1.pulse_width(1000 + 10 * i)
+        s2.pulse_width(1999 - 10 * i)
         # s3.pulse_width(1000 + i)
         time.sleep_ms(10)
     time.sleep(1)
     for i in range(100):
-        s1.pulse_width(2500 - 20 * i)
-        s2.pulse_width(500 + 20 * i)
+        s1.pulse_width(1999 - 10 * i)
+        s2.pulse_width(1000 + 10 * i)
         # s3.pulse_width(1999 - i)
         time.sleep_ms(10)
     time.sleep(1)
