@@ -29,15 +29,15 @@ def get_all_measurements(as7265x):
     }
 
 
-s1min, s1max = 60, 120
-s2min, s2max = 60, 120
+s1min, s1max = 70, 110
+s2min, s2max = 70, 110
 s1 = dfr180(1, minlim=s1min, maxlim=s1max)
 s2 = dfr180(2, minlim=s2min, maxlim=s2max)
 as7265x = qwiic_as7265x.QwiicAS7265x()
 as7265x.disable_indicator()
 as7265x.set_integration_cycles(255)
 as7265x.set_gain(3)
-fov = 3
+fov = 10
 wavelens = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'R', 'I', 'S', 'J', 'T', 'U', 'V', 'W', 'K', 'L')
 
 time.sleep(3)
