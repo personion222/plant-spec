@@ -1,6 +1,6 @@
 venv
 .venv
-*/.ipnyb_checkpoints/*
+.ipnyb_checkpoints
 
 # vite default gitignore
 # Logs

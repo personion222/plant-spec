@@ -1,14 +1,15 @@
 import time
-from pyb import Servo
+from dfr180 import dfr180
 import sensor
 import math
 
 sensor.reset()
-sensor.set_pixformat(sensor.GRAYSCALE)
+sensor.set_pixformat(sensor.RGB565)
 sensor.set_framesize(sensor.QQVGA)
 sensor.skip_frames(time=2000)
 sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
+sensor.set_brightness(3)
 clock = time.clock()
 
 # Note! Unlike find_qrcodes the find_apriltags method does not need lens correction on the image to work.
@@ -44,23 +45,9 @@ tagsizemm = 40
 def degrees(radians):
     return (180 * radians) / math.pi
 
-class dfr180(Servo):
-    def __init__(self, pin, speed=1):
-        super().__init__(pin)
-        self.cur_angle = 90
-        self.des_angle = 90
-        self.speed = speed
 
-    def set_angle(self, angle):
-        self.pulse_width(int(angle * ((2400 - 600) / 180) + 600))
-
-    def tick(self):
-        self.cur_angle = (self.des_angle - self.cur_angle) * self.speed + self.cur_angle
-        self.pulse_width(int(self.cur_angle * ((2400 - 600) / 180) + 600))
-
-
-s1 = dfr180(1, 0.25)  # P7
-s2 = dfr180(2, 0.25)  # P8
+s1 = dfr180(1, 0.25, minlim=60, maxlim=120)  # P7
+s2 = dfr180(2, 0.25, minlim=60, maxlim=120)  # P8
 
 
 def tick_servos():
@@ -116,7 +103,7 @@ while True:
         txadj = translation_to_mm(tx, tagsizemm)
         tyadj = translation_to_mm(ty, tagsizemm)
         tzadj = translation_to_mm(tz, tagsizemm)
-        s1.des_angle = 180 - (math.degrees(math.atan(tyadj / tzadj)) + 90)
+        s1.des_angle = (math.degrees(math.atan(tyadj / tzadj)) + 90)
         s2.des_angle = 180 - (math.degrees(math.atan(txadj / tzadj)) + 90)
         print(s1.des_angle, s2.des_angle)
         print(txadj, tzadj)

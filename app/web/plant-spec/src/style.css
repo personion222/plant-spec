@@ -1,26 +1,47 @@
 :root {
-	color-scheme: light dark;
-
-	--background: light-dark(#fff, #09090b);
-	--foreground: light-dark(#09090b, #fafafa);
-	--card: light-dark(#fff, #18181b);
-	--card-foreground: light-dark(#09090b, #fafafa);
-	--primary: light-dark(#574747, #fafafa);
-	--primary-foreground: light-dark(#fafafa, #18181b);
-	--secondary: light-dark(#f4f4f5, #27272a);
-	--secondary-foreground: light-dark(#574747, #fafafa);
-	--muted: light-dark(#f4f4f5, #27272a);
-	--muted-foreground: light-dark(#71717a, #a1a1aa);
-	--faint: light-dark(#fafafa, #1e1e21);
-	--faint-foreground: light-dark(#a1a1aa, #71717a);
-	--accent: light-dark(#f4f4f5, #27272a);
-	--danger: light-dark(#d32f2f, #f4807b);
-	--danger-foreground: light-dark(#fafafa, #18181b);
-	--success: light-dark(#008032, #6cc070);
-	--success-foreground: light-dark(#fafafa, #18181b);
-	--warning: light-dark(#a65b00, #f0a030);
+/*	--background: #fff;
+	--foreground: #09090b;
+	--card: #fff;
+	--card-foreground: #09090b;
+	--primary: #574747;
+	--primary-foreground: #fafafa;
+	--secondary: #f4f4f5;
+	--secondary-foreground: #574747;
+	--muted: #f4f4f5;
+	--muted-foreground: #71717a;
+	--faint: #fafafa;
+	--accent: #f4f4f5;
+	--danger: #df514c;
+	--danger-foreground: #fafafa;
+	--success: #4caf50;
+	--success-foreground: #fafafa;
+	--warning: #ff8c00;
 	--warning-foreground: #09090b;
-	--border: light-dark(#d4d4d8, #52525b);
-	--input: light-dark(#d4d4d8, #52525b);
-	--ring: light-dark(#574747, #d4d4d8);
+	--border: #d4d4d8;
+	--input: #d4d4d8;
+	--ring: #574747;*/
+	--font-sans: "SUSE", system-ui, sans-serif;
+	--font-mono: "SUSE Mono", ui-monospace, Consolas, monospace;
 }
+
+.topnav {
+	display: flex;
+	justify-content: flex-begin;
+}
+
+.sidebar {
+/* 	width: 200px; */
+}
+
+.navbtn {
+/* 	display: inline-block */
+}
+
+.material-symbols-outlined {
+	vertical-align: middle;
+}
+
+#missing-prompt {
+	text-align: center;
+}
+
