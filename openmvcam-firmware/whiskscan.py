@@ -2,6 +2,7 @@ import time
 from dfr180 import dfr180
 import qwiic_as7265x
 import csv
+import os
 
 
 def get_all_measurements(as7265x):
@@ -42,7 +43,8 @@ wavelens = ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'R', 'I', 'S', 'J', 'T', 'U'
 time.sleep(3)
 
 nametime = time.time()
-files = {wl: open(f"spect_imgs/{nametime}{wl}.csv", 'w') for wl in wavelens}
+os.mkdir(f"spect_imgs/{nametime}")
+files = {wl: open(f"spect_imgs/{nametime}/{nametime}{wl}.csv", 'w') for wl in wavelens}
 writers = {wl: csv.writer(f) for wl, f in files.items()}
 
 for i in range(s1min, s1max, fov * 2):
