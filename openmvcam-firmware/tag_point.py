@@ -46,8 +46,8 @@ def degrees(radians):
     return (180 * radians) / math.pi
 
 
-s1 = dfr180(1, 0.25, minlim=60, maxlim=120)  # P7
-s2 = dfr180(2, 0.25, minlim=60, maxlim=120)  # P8
+s1 = dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
+s2 = dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
 
 
 def tick_servos():
@@ -101,13 +101,14 @@ while True:
         # txadj = 5.30481 * tx + 1.58621
         # tyadj = -5.19884 * ty - 1.13968
         # tzadj = -28.51334 * tz + 3.92978
-        txadj = translation_to_mm(tx, tagsizemm)
-        tyadj = translation_to_mm(ty, tagsizemm)
-        tzadj = translation_to_mm(tz, tagsizemm)
+        txadj = translation_to_mm(tx, tagsizemm) - 100
+        tyadj = translation_to_mm(ty, tagsizemm) + 10
+        tzadj = -translation_to_mm(tz, tagsizemm) - 50
         s1.des_angle = (math.degrees(math.atan(tyadj / tzadj)) + 90)
         s2.des_angle = 180 - (math.degrees(math.atan(txadj / tzadj)) + 90)
-        print(s1.des_angle, s2.des_angle)
-        print(txadj, tyadj, tzadj, tagid)
+        print(tag.goodness)
+        # print(s1.des_angle, s2.des_angle)
+        # print(txadj, tyadj, tzadj, tagid)
     # s1.tick()
     # s2.tick()
     tick_servos()

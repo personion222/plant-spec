@@ -56,8 +56,8 @@ sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
 sensor.set_brightness(3)
 
-s1 = dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
-s2 = dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
+s1 = dfr180.dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
+s2 = dfr180.dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
 s1.set_angle(90)
 s2.set_angle(90)
 
@@ -84,6 +84,7 @@ running = False
 seen_tags = set()
 out = {
     "entries": {},
+    "missed": {},
     "tagsize": conf["tagsize"],
     "intcycles": conf["intcycles"],
     "fov": conf["fov"],
@@ -94,18 +95,22 @@ while not running:
     pass
 
 os.mkdir(f"mission-{missionid}")
+os.mkdir(f"mission-{missionid}/pics")
+startms = time.ticks_ms()
+lastnotag = time.ticks_ms()
 
 while running:
     img = sensor.snapshot()
-    for tag in img.find_apriltags(
-        fx=f_x, fy=f_y, cx=c_x, cy=c_y
-    ):
+    tags = img.find_apriltags(fx=f_x, fy=f_y, cx=c_x, cy=c_y)
+    if len(tags) == 0:
+        lastnotag = time.ticks_ms()
+    for tag in tags:
         img.draw_rectangle(tag.rect, color=(255, 0, 0))
         img.draw_cross(tag.cx, tag.cy, color=(0, 255, 0))
-        tx = translation_to_mm(tag.x_translation) - 100
-        ty = translation_to_mm(tag.y_translation) + 10
-        tz = -translation_to_mm(tag.z_translation) - 50
-        if -200 < tx < 200 and -200 < ty < 200 and 10 < tz < 500 and tag.id() not in seen_tags:
+        tx = translation_to_mm(tag.x_translation, conf["tagsize"]) - 100
+        ty = translation_to_mm(tag.y_translation, conf["tagsize"]) + 10
+        tz = -translation_to_mm(tag.z_translation, conf["tagsize"]) - 50
+        if -200 < tx < 200 and -200 < ty < 200 and 10 < tz < 500 and tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 1000:
             seen_tags.add(tag.id)
             s1.set_angle(90)
             s2.set_angle(135)
@@ -114,8 +119,8 @@ while running:
             txoff = tx + conf["offset"][0]
             tyoff = ty + conf["offset"][1]
             tzoff = tz + conf["offset"][2]
-            s1.set_angle(180 - (math.degrees(math.atan(tyoff / tzoff)) + 90))
-            s2.set_angle(math.degrees(math.atan(txoff / tzoff)) + 90)
+            s1.set_angle((math.degrees(math.atan(tyoff / tzoff)) + 90))
+            s2.set_angle(180 - (math.degrees(math.atan(txoff / tzoff)) + 90))
             prox = ir_amb_sens.get_distance()
             amb = ir_amb_sens.get_ambient_light()
             time.sleep_ms(100)
@@ -125,16 +130,38 @@ while running:
             time.sleep_ms(100)
             cal2 = get_all_measurements(as7265x)
             calavg = tuple((w1 + w2) / 2 for w1, w2 in zip(cal1, cal2))
-            out["entries"][tag.id] = {
-                "ms": time.ticks_ms(),
-                "id": tag.id,
-                "plant": conf["tags"][tag.id]["plant"],
-                "water": conf["tags"][tag.id]["offset"],
-                "prox": prox,
-                "amb": amb,
-                "scanwl": scan,
-                "calwl": calavg
-            }
+            img.save(f"mission-{missionid}/pics/{tag.id}.jpg")
+            try:
+                out["entries"][tag.id] = {
+                    "ms": time.ticks_diff(startms, time.ticks_ms()),
+                    "plant": conf["tags"][str(tag.id)]["plant"],
+                    "water": conf["tags"][str(tag.id)]["water"],
+                    "prox": prox,
+                    "amb": amb,
+                    "scanwl": scan,
+                    "calwl": calavg
+                }
+            except KeyError:
+                out["entries"][tag.id] = {
+                    "ms": time.ticks_diff(startms, time.ticks_ms()),
+                    "plant": None,
+                    "water": None,
+                    "prox": prox,
+                    "amb": amb,
+                    "scanwl": scan,
+                    "calwl": calavg
+                }
 
 with open(f"mission-{missionid}/scans.json", 'w') as f:
+    for key in conf["tags"].keys():
+        if int(key) not in seen_tags:
+            out["missed"][key] = {
+                "ms": None,
+                "plant": conf["tags"][key]["plant"],
+                "water": conf["tags"][key]["water"],
+                "prox": None,
+                "amb": None,
+                "scanwl": None,
+                "calwl": None
+            }
     json.dump(out, f)
