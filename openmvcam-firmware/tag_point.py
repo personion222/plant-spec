@@ -94,6 +94,7 @@ while True:
         tx = tag.x_translation
         ty = tag.y_translation
         tz = tag.z_translation
+        tagid = tag.id
     if tx:
         # s1.set_angle(math.degrees(math.tan(tx / tz)) + 90)
         # s2.set_angle(math.degrees(math.tan(ty / tz)) + 90)
@@ -106,7 +107,7 @@ while True:
         s1.des_angle = (math.degrees(math.atan(tyadj / tzadj)) + 90)
         s2.des_angle = 180 - (math.degrees(math.atan(txadj / tzadj)) + 90)
         print(s1.des_angle, s2.des_angle)
-        print(txadj, tzadj)
+        print(txadj, tyadj, tzadj, tagid)
     # s1.tick()
     # s2.tick()
     tick_servos()

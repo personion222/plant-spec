@@ -25,7 +25,7 @@ def get_all_measurements(as7265x):
         'V': as7265x.get_calibrated_v(),
         'W': as7265x.get_calibrated_w(),
         'K': as7265x.get_calibrated_k(),
-        'L': as7265x.get_calibrated_l(),
+        'L': as7265x.get_calibrated_l()
     }
 
 

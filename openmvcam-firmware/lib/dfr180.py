@@ -10,6 +10,7 @@ class dfr180(Servo):
         self.maxlim = maxlim
 
     def set_angle(self, angle):
+        self.cur_angle = max(min(angle, self.maxlim), self.minlim)
         self.pulse_width(int(max(min(angle, self.maxlim), self.minlim) * ((2400 - 600) / 180) + 600))
 
     def tick(self):
