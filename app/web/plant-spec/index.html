@@ -8,41 +8,29 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&family=SUSE:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-		<title>plant spectrometry: analytics</title>
+		<title>plant-spec - Analytics</title>
 	</head>
 	<body data-sidebar-layout>
 		<nav data-topnav class="topnav">
-			<button onclick="location.href='config.html'" class="outline navbtn">go to config <span class="material-symbols-outlined">dashboard_2_gear</span></button>
-			<p style="text-align: center; width: 100%;">plant spectrometry: analytics <span class="material-symbols-outlined">analytics</span></p>
+			<button onclick="location.href='config.html'" class="outline navbtn">Go to config <span class="material-symbols-outlined">dashboard_2_gear</span></button>
+			<p style="text-align: center; width: 100%;">Plant spectrometry - analytics <span class="material-symbols-outlined">analytics</span></p>
 		</nav>
 
 		<aside data-sidebar class="sidebar">
 			<nav>
-				<a>mission data</a>
 				<details open>
-					<summary>whisk-broom scans</summary>
-					<ul id="wb-ls">
-						<li>scan 473385721</li>
-						<li>scan 473385792</li>
-						<li>scan 473385721</li>
-					</ul>
-				</details>
-				<details open>
-					<summary>scanned tags</summary>
+					<summary>Scanned tags</summary>
 					<ul id="scanned-ls">
-						<a href='#' onclick="ot.toast('open tag 001', '', {variant: 'success'}); return false;">tag id 001: beetroot</a>
-						<a href='#' onclick="ot.toast('open tag 002', '', {variant: 'success'}); return false;">tag id 002: radish</a>
-						<a href='#' onclick="ot.toast('open tag 003', '', {variant: 'success'}); return false;">tag id 003: spinach</a>
 					</ul>
 				</details>
 			</nav>
 			<footer>
-				<button class="outline" style="width: 100%;">clear all <span class="material-symbols-outlined">delete</span></button>
+				<button class="outline" style="width: 100%;">Clear all <span class="material-symbols-outlined">delete</span></button>
 			</footer>
 		</aside>
 
 		<main>
-			<h1 id="missing-prompt">missing mission data - upload mission data folder</h1>
+			<h1 id="missing-prompt">Missing mission data - upload mission data folder</h1>
 			<div style="text-align: center;">
 				<input type="file" id="folder-inp" webkitdirectory multiple></input>
 			</div>

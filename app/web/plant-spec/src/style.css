@@ -24,6 +24,26 @@
 	--font-mono: "SUSE Mono", ui-monospace, Consolas, monospace;
 }
 
+main {
+	margin-left: 40px;
+}
+
+/*label {
+	margin: 10px;
+}*/
+
+form {
+	width: 400px;
+}
+
+fieldset {
+	margin: 10px;
+}
+
+input[type="number"] {
+	font-family: var(--font-mono);
+}
+
 .topnav {
 	display: flex;
 	justify-content: flex-begin;
