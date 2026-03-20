@@ -8,6 +8,7 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&family=SUSE:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+		<link rel="icon" type="image/x-icon" href="/public/favicon.png">
 		<title>plant-spec - Configure Device</title>
 	</head>
 
@@ -19,62 +20,68 @@
 		</nav>
 
 		<main>
-			<div class="side-by-side">
-				<div class="general-conf">
-					<h1>General</h1>
-					<form>
-						<label data-field>
-							Lens FOV (1-41 degrees)
-							<input type="number" id="fov" min=0 max=41 step=1 placeholder=10 value=10 />
-						</label>
+			<div class="container">
+				<div class="row">
+					<div class="col-3">
+						<div class="general-conf">
+							<h1>General</h1>
+							<form>
+								<label data-field>
+									Lens FOV (1-41 degrees)
+									<input type="number" id="fov" min=0 max=41 step=1 placeholder=10 value=10 />
+								</label>
 
-						<label data-field>
-							Integration cycles (1-255)
-							<input type="number" id="intcycles" min=1 max=255 step=1 placeholder=128 value=128 />
-						</label>
+								<label data-field>
+									Integration cycles (1-255)
+									<input type="number" id="intcycles" min=1 max=255 step=1 placeholder=128 value=128 />
+								</label>
 
-						<label data-field>
-							Tag size (mm)
-							<input type="number" id="tagsize" min=1 max=200 step=1 placeholder=40 value=40 />
-						</label>
+								<label data-field>
+									Tag size (mm)
+									<input type="number" id="tagsize" min=1 max=200 step=1 placeholder=40 value=40 />
+								</label>
 
-						<label data-field>
-							Offset (mm)
+								<label data-field>
+									Offset (mm)
+									<fieldset class="group">
+										<legend>x</legend>
+										<input type="number" min=-500 max=500 step=1 placeholder=40 value=40 id="xoff" />
+									</fieldset>
+									<fieldset class="group">
+										<legend>y</legend>
+										<input type="number" min=-500 max=500 step=1 placeholder=-40 value=-40 id="yoff" />
+									</fieldset>
+									<fieldset class="group">
+										<legend>z</legend>
+										<input type="number" min=-500 max=500 step=1 placeholder=0 value=0 id="zoff" />
+									</fieldset>
+								</label>
+							</form>
+						</div>
+					</div>
+
+					<div class="col-5">
+						<div class="tag-conf">
+							<h1>April tags</h1>
 							<fieldset class="group">
-								<legend>x</legend>
-								<input type="number" min=-500 max=500 step=1 placeholder=40 value=40 id="xoff" />
+								<button class="outline" id="add-tag"><span class="material-symbols-outlined">add</span> Add</button>
+								<button class="outline" id="remove-tag"><span class="material-symbols-outlined">remove</span> Remove</button>
 							</fieldset>
-							<fieldset class="group">
-								<legend>y</legend>
-								<input type="number" min=-500 max=500 step=1 placeholder=-40 value=-40 id="yoff" />
-							</fieldset>
-							<fieldset class="group">
-								<legend>z</legend>
-								<input type="number" min=-500 max=500 step=1 placeholder=0 value=0 id="zoff" />
-							</fieldset>
-						</label>
-					</form>
-				</div>
 
-				<div class="tag-conf">
-					<h1>April tags</h1>
-					<fieldset class="group">
-						<button class="outline" id="add-tag"><span class="material-symbols-outlined">add</span> Add</button>
-						<button class="outline" id="remove-tag"><span class="material-symbols-outlined">remove</span> Remove</button>
-					</fieldset>
-
-					<div class="table">
-						<table>
-							<thead>
-								<tr>
-									<th>ID (0-272)</th>
-									<th>Plant</th>
-									<th>Water (mL/day)</th>
-								</tr>
-							</thead>
-							<tbody id="tag-ls">
-							</tbody>
-						</table>
+							<div class="table">
+								<table>
+									<thead>
+										<tr>
+											<th>ID (0-272)</th>
+											<th>Plant</th>
+											<th>Water (mL/day)</th>
+										</tr>
+									</thead>
+									<tbody id="tag-ls">
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

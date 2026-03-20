@@ -1,0 +1,36 @@
+{
+	"tags": {
+		"0": {
+			"plant": "beetroot",
+			"water": 30
+		},
+		"1": {
+			"plant": "radish",
+			"water": 40
+		},
+		"2": {
+			"plant": "spinach",
+			"water": 50
+		},
+		"3": {
+			"plant": "beetroot",
+			"water": 40
+		},
+		"4": {
+			"plant": "radish",
+			"water": 50
+		},
+		"5": {
+			"plant": "spinach",
+			"water": 30
+		}
+	},
+	"intcycles": 255,
+	"fov": 5,
+	"tagsize": 40,
+	"offset": [
+		40,
+		-40,
+		0
+	]
+}

@@ -24,13 +24,12 @@ def process_entries():
 			else:
 				rf.append(0)
 		spectrum = vs.VegSpec(WL, rf)
-		indices_raw = list(spectrum.indices.values())
-		indices_proc = []
-		for index in indices_raw:
-			if numpy.isnan(index) or numpy.isinf(index):
-				indices_proc.append(None)
+		indices_proc = {}
+		for index, val in spectrum.indices.items():
+			if numpy.isnan(val) or numpy.isinf(val):
+				indices_proc[index] = None
 			else:
-				indices_proc.append(int(index))
+				indices_proc[index] = round(float(val), 10)
 		res[tag_id] = {
 			"rf": rf,
 			"indices": indices_proc

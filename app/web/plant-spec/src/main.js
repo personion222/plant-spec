@@ -6,7 +6,7 @@ document.getElementById("folder-form").reset()
 
 const wl = [410, 435, 460, 485, 510, 535, 560, 585, 610, 645, 680, 705, 730, 760, 810, 860, 900, 940]
 const backend_url = "http://127.0.0.1:8080"
-const pics = [];
+const enabled_indices = ["NDVI", "WLREIP", "BD", "BDR", "NDPI", "SIPI", "SPVI", "CVI"];
 var cur_page = -1;
 const unscanned_badge = document.createElement("span");
 unscanned_badge.textContent = "not scanned!";
@@ -62,12 +62,99 @@ document.getElementById("folder-inp").addEventListener("change", async (event) =
 
 function render_gen_settings() {
 	document.getElementsByTagName("main")[0].innerHTML = `
-	<h1>Mission info</h1>
-	<p>Tag offset: x: <code id="offset-x"></code> mm, y: <code id="offset-y"></code> mm, z: <code id="offset-z"></code> mm</p>
-	<p>Integration cycles: <code id="intcycles-txt"></code> (exposure time: <code id="intms-txt"></code> ms)</p>
-	<p>April tag size (mm): <code id="tagsize-txt"></code></p>
-	<p>AS7265x lens FOV: <code id="fov-txt"></code></p>
+	<div class="container">
+		<div class="row">
+			<div class="col-4">
+				<h1>Mission info</h1>
+				<p>Tag offset: x: <code id="offset-x"></code> mm, y: <code id="offset-y"></code> mm, z: <code id="offset-z"></code> mm</p>
+				<p>Integration cycles: <code id="intcycles-txt"></code> (exposure time: <code id="intms-txt"></code> ms)</p>
+				<p>April tag size (mm): <code id="tagsize-txt"></code></p>
+				<p>AS7265x lens FOV: <code id="fov-txt"></code></p>
+			</div>
+			<div class="col-8">
+				<h1>Spectral indices</h1>
+				<ot-dropdown>
+					<button popovertarget="index-menu" class="outline">
+						<span class="material-symbols-outlined">add</span> Add
+					</button>
+					<menu popover id="index-menu" class="dropdown-content">
+					</menu>
+					<button id="remove-index" class="outline"><span class="material-symbols-outlined">remove</span> Remove</button>
+				</ot-dropdown>
+				<table>
+					<thead>
+						<tr id="comparison-head"><td>plant</td></tr>
+					</thead>
+					<tbody id="comparison-body">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 	`;
+	const index_menu = document.getElementById("index-menu");
+	const comparison_head = document.getElementById("comparison-head");
+	const comparison_body = document.getElementById("comparison-body");
+	let new_index;
+	let new_plant;
+	let new_plant_name;
+	let new_index_col;
+	let new_index_val;
+	let plant_rows = {};
+
+	for (let id of Object.keys(entries_processed)) {
+		new_plant = document.createElement("tr");
+		new_plant_name = document.createElement("td");
+		new_plant_name.textContent = `${id}: ${scans_json["entries"][id]["plant"]}`;
+		new_plant.appendChild(new_plant_name);
+		plant_rows[id] = new_plant;
+		comparison_body.appendChild(new_plant);
+	}
+
+	function add_index(index, is_new=false) {
+		new_index_col = document.createElement("td");
+		new_index_col.textContent = index;
+		comparison_head.appendChild(new_index_col);
+		if (!is_new) {
+			enabled_indices.push(index);
+		}
+		for (let id of Object.keys(entries_processed)) {
+			new_index_val = document.createElement("td");
+			new_index_val.innerHTML = `<code>${entries_processed[id]["indices"][index]}</code>`;
+			plant_rows[id].appendChild(new_index_val);
+		}
+	}
+
+	for (let index of enabled_indices) {
+		add_index(index, true);
+	}
+
+	for (let index of Object.keys(entries_processed[Object.keys(entries_processed)[0]]["indices"])) {
+		new_index = document.createElement("button");
+		new_index.textContent = index;
+		new_index.role = "menuitem";
+		new_index.className = "dropdown-content";
+		new_index.onclick = () => {
+			if (enabled_indices.length < 8) {
+				if (!enabled_indices.includes(index)){
+					add_index(index);
+				}
+			} else {
+				ot.toast("Remove spectral index to continue", "Too many indices (max 8)", {variant: "warning"});
+			}
+		}
+		index_menu.appendChild(new_index);
+	}
+
+	document.getElementById("remove-index").onclick = () => {
+		if (enabled_indices.length >= 1) {
+			comparison_head.removeChild(comparison_head.lastChild);
+			enabled_indices.pop();
+			for (let id of Object.keys(entries_processed)) {
+				plant_rows[id].removeChild(plant_rows[id].lastChild);
+			}
+		}
+	}
 	document.getElementById("offset-x").textContent = scans_json["offset"][0].toString();
 	document.getElementById("offset-y").textContent = scans_json["offset"][1].toString();
 	document.getElementById("offset-z").textContent = scans_json["offset"][2].toString();
@@ -94,25 +181,38 @@ function render_tag_scan(id, missing = false) {
 		}
 		document.getElementsByTagName("main")[0].innerHTML = `
 		<h1 id="tag-title"></h1>
-		<div class="tag-dash">
-			<img id="plant-img" />
-			<div id="spec-chart-container"><canvas id="spec-chart" /></div>
-			<table>
-				<tbody>
-					<tr>
-						<td>Time since mission start (hh:mm:ss)</td> <td><code id="time-txt"></code></td>
-					</tr>
-					<tr>
-						<td>Water (mL/day)</td> <td><code id="water-txt"></code></td>
-					</tr>
-					<tr>
-						<td>Infrared proximity (unitless, higher = farther, 0-1.5m)</td> <td><code id="prox-txt"></code></td>
-					</tr>
-					<tr>
-						<td>Ambient light (lux)</td> <td><code id="amb-txt"></code></td>
-					</tr>
-				</tbody>
-			</table>
+		<div class="container">
+			<div class="row">
+				<div class="col-4">
+					<h1>Image</h1>
+					<img id="plant-img" />
+				</div>
+				<div class="col-7">
+					<h1>Spectral response</h1>
+					<canvas id="spec-chart" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-8">
+					<h1>Statistics</h1>
+					<table>
+						<tbody>
+							<tr>
+								<td>Time since mission start (hh:mm:ss)</td> <td><code id="time-txt"></code></td>
+							</tr>
+							<tr>
+								<td>Water (mL/day)</td> <td><code id="water-txt"></code></td>
+							</tr>
+							<tr>
+								<td>Infrared proximity (unitless, higher = farther, 0-1.5m)</td> <td><code id="prox-txt"></code></td>
+							</tr>
+							<tr>
+								<td>Ambient light (lux)</td> <td><code id="amb-txt"></code></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 		`;
 		document.getElementById("tag-title").textContent = `Tag ID ${id}: ${plantname}`;
@@ -124,6 +224,7 @@ function render_tag_scan(id, missing = false) {
 				document.getElementById("plant-img").src = e.target.result;
 			}
 			img_reader.readAsDataURL(img_file);
+
 			const rf_data = [];
 			const sample_cts_data = [];
 			const ref_cts_data = [];
@@ -199,6 +300,10 @@ function render_tag_scan(id, missing = false) {
 			document.getElementById("tag-title").appendChild(unscanned_badge.cloneNode(true));
 		}
 	}
+}
+
+window.onbeforeunload = () => {
+	return "Information you have entered might not be saved."
 }
 
 document.getElementById("clear").onclick = () => {

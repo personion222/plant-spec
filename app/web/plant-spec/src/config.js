@@ -16,8 +16,10 @@ document.getElementById("add-tag").onclick = () => {
 
 document.getElementById("remove-tag").onclick = () => {
 	tags.pop();
-	let tagls = document.getElementById("tag-ls")
-	tagls.removeChild(tagls.lastChild)
+	let tagls = document.getElementById("tag-ls");
+	if (tagls.lastChild) {
+		tagls.removeChild(tagls.lastChild);
+	}
 }
 
 document.getElementById("get-conf").onclick = () => {
