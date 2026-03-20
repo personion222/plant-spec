@@ -5,18 +5,19 @@ const tags = [];
 document.getElementById("add-tag").onclick = () => {
 	const row = document.createElement("tr");
 	row.innerHTML = `
-		<td><input type="number" min=0 max=272></td>
-		<td><input type="text" placeholder="beetroot"></td>
-		<td><input type="number" min=0 max=1000 placeholder=40></td>
-	`
+		<td><input type="number" min=0 max=272 placeholder=0 value=0></td>
+		<td><input type="text" placeholder="beetroot" value="beetroot"></td>
+		<td><input type="number" min=0 max=1000 placeholder=40 value="40"></td>
+	`;
 	document.getElementById("tag-ls").appendChild(row);
+	row.children[0].children[0].value = tags.length;
 	tags.push(row);
 }
 
 document.getElementById("remove-tag").onclick = () => {
 	tags.pop();
-	var body = document.getElementById("tag-ls")
-	body.removeChild(body.lastChild)
+	let tagls = document.getElementById("tag-ls")
+	tagls.removeChild(tagls.lastChild)
 }
 
 document.getElementById("get-conf").onclick = () => {
@@ -27,7 +28,7 @@ document.getElementById("get-conf").onclick = () => {
 		"tagsize": document.getElementById("tagsize").valueAsNumber,
 		"offset": [document.getElementById("xoff").valueAsNumber, document.getElementById("yoff").valueAsNumber, document.getElementById("zoff").valueAsNumber]
 	};
-	for (const row of tags) {
+	for (let row of tags) {
 		res["tags"][row.children[0].children[0].valueAsNumber] = {
 			"plant": row.children[1].children[0].value,
 			"water": row.children[2].children[0].valueAsNumber
@@ -43,3 +44,5 @@ document.getElementById("get-conf").onclick = () => {
 
 	URL.revokeObjectURL(url);
 }
+
+document.getElementById("add-tag").click();

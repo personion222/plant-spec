@@ -133,7 +133,7 @@ while running:
             img.save(f"mission-{missionid}/pics/{tag.id}.jpg")
             try:
                 out["entries"][tag.id] = {
-                    "ms": time.ticks_diff(startms, time.ticks_ms()),
+                    "ms": time.ticks_diff(time.ticks_ms(), startms),
                     "plant": conf["tags"][str(tag.id)]["plant"],
                     "water": conf["tags"][str(tag.id)]["water"],
                     "prox": prox,
@@ -143,7 +143,7 @@ while running:
                 }
             except KeyError:
                 out["entries"][tag.id] = {
-                    "ms": time.ticks_diff(startms, time.ticks_ms()),
+                    "ms": time.ticks_diff(time.ticks_ms(), startms),
                     "plant": None,
                     "water": None,
                     "prox": prox,

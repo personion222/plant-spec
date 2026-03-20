@@ -10,61 +10,74 @@
 		<link href="https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&family=SUSE:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<title>plant-spec - Configure Device</title>
 	</head>
+
 	<body>
 		<nav data-topnav class="topnav">
-			<button onclick="location.href='index.html'" class="outline navbtn">Go to analytics <span class="material-symbols-outlined">analytics</span></button>
-			<p style="text-align: center; width: 100%;">Plant spectrometry - configure device <span class="material-symbols-outlined">dashboard_2_gear</span></p>
+			<button onclick="location.href='index.html'" class="navbtn">Go to analytics <span class="material-symbols-outlined">analytics</span></button>
+			<p style="text-align: center; width: 100%;" class="title">Plant spectrometry - configure device <span class="material-symbols-outlined">dashboard_2_gear</span></p>
+			<button class="large" id="get-conf">Get <code>config.json</code></button>
 		</nav>
+
 		<main>
-			<h1>April tags</h1>
-			<fieldset class="group">
-				<button class="outline" id="add-tag"><span class="material-symbols-outlined">add</span> Add</button>
-				<button class="outline" id="remove-tag"><span class="material-symbols-outlined">remove</span> Remove</button>
-			</fieldset>
-			<div class="table">
-				<table>
-					<thead>
-						<tr>
-							<th>ID (0-272)</th>
-							<th>Plant</th>
-							<th>Water (mL/day)</th>
-						</tr>
-					</thead>
-					<tbody id="tag-ls">
-					</tbody>
-				</table>
+			<div class="side-by-side">
+				<div class="general-conf">
+					<h1>General</h1>
+					<form>
+						<label data-field>
+							Lens FOV (1-41 degrees)
+							<input type="number" id="fov" min=0 max=41 step=1 placeholder=10 value=10 />
+						</label>
+
+						<label data-field>
+							Integration cycles (1-255)
+							<input type="number" id="intcycles" min=1 max=255 step=1 placeholder=128 value=128 />
+						</label>
+
+						<label data-field>
+							Tag size (mm)
+							<input type="number" id="tagsize" min=1 max=200 step=1 placeholder=40 value=40 />
+						</label>
+
+						<label data-field>
+							Offset (mm)
+							<fieldset class="group">
+								<legend>x</legend>
+								<input type="number" min=-500 max=500 step=1 placeholder=40 value=40 id="xoff" />
+							</fieldset>
+							<fieldset class="group">
+								<legend>y</legend>
+								<input type="number" min=-500 max=500 step=1 placeholder=-40 value=-40 id="yoff" />
+							</fieldset>
+							<fieldset class="group">
+								<legend>z</legend>
+								<input type="number" min=-500 max=500 step=1 placeholder=0 value=0 id="zoff" />
+							</fieldset>
+						</label>
+					</form>
+				</div>
+
+				<div class="tag-conf">
+					<h1>April tags</h1>
+					<fieldset class="group">
+						<button class="outline" id="add-tag"><span class="material-symbols-outlined">add</span> Add</button>
+						<button class="outline" id="remove-tag"><span class="material-symbols-outlined">remove</span> Remove</button>
+					</fieldset>
+
+					<div class="table">
+						<table>
+							<thead>
+								<tr>
+									<th>ID (0-272)</th>
+									<th>Plant</th>
+									<th>Water (mL/day)</th>
+								</tr>
+							</thead>
+							<tbody id="tag-ls">
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
-			<h1>General</h1>
-			<form>
-				<label data-field>
-					Lens FOV (1-41 degrees)
-					<input type="number" id="fov" min=0 max=41 step=1 placeholder=10 value=10 />
-				</label>
-				<label data-field>
-					Integration cycles
-					<input type="number" id="intcycles" min=1 max=255 step=1 placeholder=128 value=128 />
-				</label>
-				<label data-field>
-					Tag size (mm)
-					<input type="number" id="tagsize" min=1 max=200 step=1 placeholder=40 value=40 />
-				</label>
-				<label data-field>
-					Offset (mm)
-					<fieldset class="group">
-						<legend>x</legend>
-						<input type="number" id="xoff" min=-200 max=200 step=1 placeholder=40 value=40 />
-					</fieldset>
-					<fieldset class="group">
-						<legend>y</legend>
-						<input type="number" id="yoff" min=-200 max=200 step=1 placeholder=-40 value=-40 />
-					</fieldset>
-					<fieldset class="group">
-						<legend>z</legend>
-						<input type="number" id="zoff" min=-200 max=200 step=1 placeholder=0 value=0 />
-					</fieldset>
-				</label>
-			</form>
-			<button class="outline large" id="get-conf">Get <code>config.json</code></button>
 		</main>
 		<script type="module" src="/src/config.js"></script>
 	</body>

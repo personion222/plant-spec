@@ -12,6 +12,7 @@
     "vite": "^8.0.0"
   },
   "dependencies": {
-    "@knadh/oat": "^0.4.2"
+    "@knadh/oat": "^0.4.2",
+    "chart.js": "^4.5.1"
   }
 }

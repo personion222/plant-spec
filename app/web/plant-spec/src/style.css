@@ -1,5 +1,5 @@
 :root {
-/*	--background: #fff;
+	--background: #fff;
 	--foreground: #09090b;
 	--card: #fff;
 	--card-foreground: #09090b;
@@ -19,25 +19,50 @@
 	--warning-foreground: #09090b;
 	--border: #d4d4d8;
 	--input: #d4d4d8;
-	--ring: #574747;*/
+	--ring: #574747;
 	--font-sans: "SUSE", system-ui, sans-serif;
 	--font-mono: "SUSE Mono", ui-monospace, Consolas, monospace;
 }
 
 main {
-	margin-left: 40px;
+	padding-left: 40px;
 }
 
 /*label {
 	margin: 10px;
 }*/
 
-form {
-	width: 400px;
+fieldset {
+	margin: 10px 0;
 }
 
-fieldset {
-	margin: 10px;
+code {
+	color: var(--foreground);
+	font-weight: var(--font-semibold);
+}
+
+a {
+	align-items: center;
+	display: flex;
+}
+
+h1 {
+	align-items: center;
+	display: flex;
+	gap: 10px;
+}
+
+img {
+	border-radius: var(--radius-medium);
+	height: 100%;
+}
+
+table {
+	font-size: medium;
+}
+
+input[type="file"] {
+	margin-top: 10px;
 }
 
 input[type="number"] {
@@ -61,7 +86,39 @@ input[type="number"] {
 	vertical-align: middle;
 }
 
-#missing-prompt {
-	text-align: center;
+.badge {
+	vertical-align: middle;
 }
+
+.scan-container {
+	display: grid;
+	gap: 10px;
+}
+
+.side-by-side {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	margin-right: 30px;
+}
+
+.general-conf {
+	flex-grow: 1;
+}
+
+.tag-conf {
+	flex-grow: 1
+}
+
+.title {
+	margin: auto;
+}
+
+#get-conf {
+	float: center;
+}
+
+/*#missing-prompt {
+	text-align: center;
+}*/
 

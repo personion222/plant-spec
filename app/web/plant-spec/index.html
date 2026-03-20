@@ -10,30 +10,40 @@
 		<link href="https://fonts.googleapis.com/css2?family=SUSE+Mono:ital,wght@0,100..800;1,100..800&family=SUSE:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 		<title>plant-spec - Analytics</title>
 	</head>
+
 	<body data-sidebar-layout>
 		<nav data-topnav class="topnav">
-			<button onclick="location.href='config.html'" class="outline navbtn">Go to config <span class="material-symbols-outlined">dashboard_2_gear</span></button>
-			<p style="text-align: center; width: 100%;">Plant spectrometry - analytics <span class="material-symbols-outlined">analytics</span></p>
+			<button onclick="location.href='config.html'" class="navbtn">Go to config <span class="material-symbols-outlined">dashboard_2_gear</span></button>
+			<p style="text-align: center; width: 100%;" class="title">Plant spectrometry - analytics <span class="material-symbols-outlined">analytics</span></p>
 		</nav>
 
 		<aside data-sidebar class="sidebar">
 			<nav>
+				<a id="gen-settings-tab">Mission info</a>
 				<details open>
 					<summary>Scanned tags</summary>
 					<ul id="scanned-ls">
 					</ul>
 				</details>
+				<details open>
+					<summary>Missed tags</summary>
+					<ul id="missed-ls">
+					</ul>
+				</details>
 			</nav>
 			<footer>
-				<button class="outline" style="width: 100%;">Clear all <span class="material-symbols-outlined">delete</span></button>
+				<button data-variant="danger" class="outline" style="width: 100%;" id="clear">Clear all <span class="material-symbols-outlined">delete</span></button>
 			</footer>
 		</aside>
 
 		<main>
-			<h1 id="missing-prompt">Missing mission data - upload mission data folder</h1>
-			<div style="text-align: center;">
-				<input type="file" id="folder-inp" webkitdirectory multiple></input>
-			</div>
+			<h1>Mission data required</h1>
+			<form id="folder-form">
+				<label data-field>
+					Upload mission data folder (e.g. <code>mission-0</code>)<br>
+					<input type="file" id="folder-inp" webkitdirectory multiple></input>
+				</label>
+			</form>
 		</main>
 		<script type="module" src="/src/main.js"></script>
 	</body>

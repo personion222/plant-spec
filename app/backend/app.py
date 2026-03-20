@@ -1,7 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import vegspec as vs
+import numpy
+import sys
+import os
 
 app = Flask(__name__)
+CORS(app)
 WL = (
 	410, 435, 460, 485, 510, 535, 560, 585, 610, 645, 680, 705, 730, 760, 810, 860, 900, 940
 ) # wavelengths of sensors in nanaometers
@@ -9,16 +14,29 @@ WL = (
 
 @app.route("/process-entries", methods=["POST"])
 def process_entries():
-	res = {"entries": []}
-	for entry in enumerate(request.json["entries"]):
+	res = {}
+	for tag_id, entry in request.json["entries"].items():
+		print(tag_id, entry)
 		rf = [] # reflectance factors, 0 to 1
-		for sample_cts, ref_cts in zip(request.json["sample"]["ref"]):
-			rf.append(min(1, sample_counts / ref_counts))
+		for sample_cts, ref_cts in zip(entry["scanwl"], entry["calwl"]):
+			if ref_cts != 0:
+				rf.append(min(1, sample_cts / ref_cts))
+			else:
+				rf.append(0)
 		spectrum = vs.VegSpec(WL, rf)
-		res["entries"].append({
-			"indices": []
-		})
-		for spect_index in request.json["indices"]:
-			res["entries"][-1]["indices"].append(spectrum.indices[spect_index.upper()])
+		indices_raw = list(spectrum.indices.values())
+		indices_proc = []
+		for index in indices_raw:
+			if numpy.isnan(index) or numpy.isinf(index):
+				indices_proc.append(None)
+			else:
+				indices_proc.append(int(index))
+		res[tag_id] = {
+			"rf": rf,
+			"indices": indices_proc
+		}
 
-	return jsonify(request.json)
+	return jsonify(res)
+
+if __name__ == "__main__":
+	app.run()

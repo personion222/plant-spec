@@ -1,6 +1,7 @@
 venv
 .venv
 .ipnyb_checkpoints
+__pycache__
 
 # vite default gitignore
 # Logs
