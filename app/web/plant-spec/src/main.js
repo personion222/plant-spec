@@ -66,24 +66,25 @@ function render_gen_settings() {
 		<div class="row">
 			<div class="col-4">
 				<h1>Mission info</h1>
-				<p>Tag offset: x: <code id="offset-x"></code> mm, y: <code id="offset-y"></code> mm, z: <code id="offset-z"></code> mm</p>
+				<p>Tag offset x: <code id="offset-x"></code> mm, y: <code id="offset-y"></code> mm, z: <code id="offset-z"></code> mm</p>
 				<p>Integration cycles: <code id="intcycles-txt"></code> (exposure time: <code id="intms-txt"></code> ms)</p>
 				<p>April tag size (mm): <code id="tagsize-txt"></code></p>
 				<p>AS7265x lens FOV: <code id="fov-txt"></code></p>
 			</div>
 			<div class="col-8">
 				<h1>Spectral indices</h1>
+				<p>Which indices do you need? Learn more <a href="/public/vegspec-indices.pdf" target="_blank" style="display: inline;">here</a> <i>(hint: helpful information in table 2, pg 22)</i></p>
 				<ot-dropdown>
 					<button popovertarget="index-menu" class="outline">
 						<span class="material-symbols-outlined">add</span> Add
 					</button>
 					<menu popover id="index-menu" class="dropdown-content">
 					</menu>
-					<button id="remove-index" class="outline"><span class="material-symbols-outlined">remove</span> Remove</button>
 				</ot-dropdown>
+				<button id="remove-index" class="outline"><span class="material-symbols-outlined">remove</span> Remove</button>
 				<table>
 					<thead>
-						<tr id="comparison-head"><td>plant</td></tr>
+						<tr id="comparison-head"><th>plant</th></tr>
 					</thead>
 					<tbody id="comparison-body">
 					</tbody>
@@ -112,8 +113,9 @@ function render_gen_settings() {
 	}
 
 	function add_index(index, is_new=false) {
-		new_index_col = document.createElement("td");
+		new_index_col = document.createElement("th");
 		new_index_col.textContent = index;
+		new_index_col.className = "monospace"
 		comparison_head.appendChild(new_index_col);
 		if (!is_new) {
 			enabled_indices.push(index);
@@ -300,10 +302,6 @@ function render_tag_scan(id, missing = false) {
 			document.getElementById("tag-title").appendChild(unscanned_badge.cloneNode(true));
 		}
 	}
-}
-
-window.onbeforeunload = () => {
-	return "Information you have entered might not be saved."
 }
 
 document.getElementById("clear").onclick = () => {

@@ -125,6 +125,10 @@ input[type="text"] {
 	overflow-y: scroll;
 }
 
+.monospace {
+	font-family: var(--font-mono)
+}
+
 #get-conf {
 	float: center;
 }
