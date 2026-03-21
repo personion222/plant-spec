@@ -29,7 +29,7 @@ def process_entries():
 			if numpy.isnan(val) or numpy.isinf(val):
 				indices_proc[index] = None
 			else:
-				indices_proc[index] = round(float(val), 10)
+				indices_proc[index] = round(float(val), 5)
 		res[tag_id] = {
 			"rf": rf,
 			"indices": indices_proc

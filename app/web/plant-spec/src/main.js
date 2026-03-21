@@ -9,7 +9,7 @@ const backend_url = "http://127.0.0.1:8080"
 const enabled_indices = ["NDVI", "WLREIP", "BD", "BDR", "NDPI", "SIPI", "SPVI", "CVI"];
 var cur_page = -1;
 const unscanned_badge = document.createElement("span");
-unscanned_badge.textContent = "not scanned!";
+unscanned_badge.textContent = "missed!";
 unscanned_badge.className = "badge danger";
 const unknown_badge = document.createElement("span");
 unknown_badge.textContent = "unknown";
@@ -75,16 +75,16 @@ function render_gen_settings() {
 				<h1>Spectral indices</h1>
 				<p>Which indices do you need? Learn more <a href="/public/vegspec-indices.pdf" target="_blank" style="display: inline;">here</a> <i>(hint: helpful information in table 2, pg 22)</i></p>
 				<ot-dropdown>
-					<button popovertarget="index-menu" class="outline">
+					<button popovertarget="index-menu">
 						<span class="material-symbols-outlined">add</span> Add
 					</button>
 					<menu popover id="index-menu" class="dropdown-content">
 					</menu>
 				</ot-dropdown>
-				<button id="remove-index" class="outline"><span class="material-symbols-outlined">remove</span> Remove</button>
+				<button id="remove-index"><span class="material-symbols-outlined">remove</span> Remove</button>
 				<table>
 					<thead>
-						<tr id="comparison-head"><th>plant</th></tr>
+						<tr id="comparison-head"><th>Tag</th></tr>
 					</thead>
 					<tbody id="comparison-body">
 					</tbody>
@@ -115,7 +115,6 @@ function render_gen_settings() {
 	function add_index(index, is_new=false) {
 		new_index_col = document.createElement("th");
 		new_index_col.textContent = index;
-		new_index_col.className = "monospace"
 		comparison_head.appendChild(new_index_col);
 		if (!is_new) {
 			enabled_indices.push(index);
@@ -255,6 +254,7 @@ function render_tag_scan(id, missing = false) {
 					fill: false
 				}]
 			}
+			Chart.defaults.font.family = "SUSE Mono";
 			new Chart(chart_ctx, {
 				type: "line",
 				data: data,
@@ -269,7 +269,8 @@ function render_tag_scan(id, missing = false) {
 						y: {
 							display: true,
 							position: "left",
-							beginAtZero: true
+							beginAtZero: true,
+							max: 1
 						},
 						y_alt: {
 							display: true,
@@ -277,6 +278,10 @@ function render_tag_scan(id, missing = false) {
 							type: "linear",
 							beginAtZero: true
 						}
+					},
+					interaction: {
+						mode: "index",
+						intersect: false
 					}
 				}
 			})
