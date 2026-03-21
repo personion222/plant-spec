@@ -1,4 +1,4 @@
-from machine import Pin
+from machine import Pin, LED
 import qwiic_as7265x
 import vcnl4200
 import dfr180
@@ -7,6 +7,11 @@ import json
 import time
 import math
 import os
+
+r_led, g_led, b_led = LED("LED_RED"), LED("LED_GREEN"), LED("LED_BLUE")
+r_led.on()
+g_led.off()
+b_led.off()
 
 
 def toggle_running(_):
@@ -94,6 +99,8 @@ out = {
 while not running:
     pass
 
+r_led.off()
+g_led.on()
 os.mkdir(f"mission-{missionid}")
 os.mkdir(f"mission-{missionid}/pics")
 startms = time.ticks_ms()
@@ -104,13 +111,17 @@ while running:
     tags = img.find_apriltags(fx=f_x, fy=f_y, cx=c_x, cy=c_y)
     if len(tags) == 0:
         lastnotag = time.ticks_ms()
+        g_led.on()
+        b_led.off()
     for tag in tags:
+        g_led.off()
+        b_led.on()
         img.draw_rectangle(tag.rect, color=(255, 0, 0))
         img.draw_cross(tag.cx, tag.cy, color=(0, 255, 0))
         tx = translation_to_mm(tag.x_translation, conf["tagsize"]) - 100
         ty = translation_to_mm(tag.y_translation, conf["tagsize"]) + 10
         tz = -translation_to_mm(tag.z_translation, conf["tagsize"]) - 50
-        if -200 < tx < 200 and -200 < ty < 200 and 10 < tz < 500 and tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 1000:
+        if -200 < tx < 200 and -200 < ty < 200 and 10 < tz < 500 and tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 300:
             seen_tags.add(tag.id)
             s1.set_angle(90)
             s2.set_angle(135)
@@ -153,6 +164,9 @@ while running:
                 }
 
 with open(f"mission-{missionid}/scans.json", 'w') as f:
+    r_led.on()
+    g_led.off()
+    b_led.off()
     for key in conf["tags"].keys():
         if int(key) not in seen_tags:
             out["missed"][key] = {
@@ -165,3 +179,4 @@ with open(f"mission-{missionid}/scans.json", 'w') as f:
                 "calwl": None
             }
     json.dump(out, f)
+    r_led.off()
