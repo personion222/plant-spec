@@ -1,5 +1,5 @@
 :root {
-/*	--background: #fff;
+	--background: #fff;
 	--foreground: #09090b;
 	--card: #fff;
 	--card-foreground: #09090b;
@@ -19,28 +19,28 @@
 	--warning-foreground: #09090b;
 	--border: #d4d4d8;
 	--input: #d4d4d8;
-	--ring: #574747;*/
-	--background: #faf4ed; /**/
-	--foreground: #575279; /**/
-	--card: #faf4ed; /**/
-	--card-foreground: #575279; /**/
-	--primary: #d7827e; /**/
-	--primary-foreground: #fffaf3; /**/
-	--secondary: #f2e9e1; /**/
-	--secondary-foreground: #797593; /**/
-	--muted: #f2e9e1; /**/
-	--muted-foreground: #9893a5; /**/
-	--faint: #fffaf3; /**/
-	--accent: #f2e9e1; /**/
-	--danger: #b4637a; /**/
-	--danger-foreground: #fffaf3; /**/
-	--success: #56949f; /**/
-	--success-foreground: #fffaf3; /**/
-	--warning: #ea9d34; /**/
-	--warning-foreground: #575279; /**/
-	--border: #cecacd; /**/
-	--input: #cecacd; /**/
-	--ring: #d7827e; /**/
+	--ring: #574747;
+/*	--background: #faf4ed;
+	--foreground: #575279;
+	--card: #faf4ed;
+	--card-foreground: #575279;
+	--primary: #d7827e;
+	--primary-foreground: #fffaf3;
+	--secondary: #f2e9e1;
+	--secondary-foreground: #797593;
+	--muted: #f2e9e1;
+	--muted-foreground: #9893a5;
+	--faint: #fffaf3;
+	--accent: #f2e9e1;
+	--danger: #b4637a;
+	--danger-foreground: #fffaf3;
+	--success: #56949f;
+	--success-foreground: #fffaf3;
+	--warning: #ea9d34;
+	--warning-foreground: #575279;
+	--border: #cecacd;
+	--input: #cecacd;
+	--ring: #d7827e;*/
 	--font-sans: "SUSE", system-ui, sans-serif;
 	--font-mono: "SUSE Mono", ui-monospace, Consolas, monospace;
 }
@@ -143,6 +143,7 @@ input[type="text"] {
 
 .title {
 	margin: auto;
+	font-size: 14pt;
 }
 
 .dropdown-content {

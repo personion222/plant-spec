@@ -75,13 +75,13 @@ function render_gen_settings() {
 				<h1>Spectral indices</h1>
 				<p>Which indices do you need? Learn more <a href="/public/vegspec-indices.pdf" target="_blank" style="display: inline;">here</a> <i>(hint: helpful information in table 2, pg 22)</i></p>
 				<ot-dropdown>
-					<button popovertarget="index-menu">
+					<button class="outline" popovertarget="index-menu">
 						<span class="material-symbols-outlined">add</span> Add
 					</button>
 					<menu popover id="index-menu" class="dropdown-content">
 					</menu>
 				</ot-dropdown>
-				<button id="remove-index"><span class="material-symbols-outlined">remove</span> Remove</button>
+				<button class="outline" id="remove-index"><span class="material-symbols-outlined">remove</span> Remove</button>
 				<table>
 					<thead>
 						<tr id="comparison-head"><th>Tag</th></tr>
