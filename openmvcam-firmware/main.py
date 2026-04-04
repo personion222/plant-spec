@@ -17,7 +17,7 @@ b_led.off()
 def toggle_running(_):
     global lastpress
     global running
-    if time.ticks_diff(time.ticks_ms(), lastpress) > 100:
+    if time.ticks_diff(time.ticks_ms(), lastpress) > 1000:
         print("toggle running")
         lastpress = time.ticks_ms()
         running = not running
@@ -55,11 +55,11 @@ with open("config.json", 'r') as f:
 
 sensor.reset()
 sensor.set_pixformat(sensor.RGB565)
-sensor.set_framesize(sensor.QVGA)
+sensor.set_framesize(sensor.QQVGA)
 sensor.skip_frames(time=2000)
 sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
-sensor.set_brightness(3)
+# sensor.set_brightness(3)
 
 s1 = dfr180.dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
 s2 = dfr180.dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
@@ -73,10 +73,10 @@ as7265x.set_gain(3)
 
 ir_amb_sens = vcnl4200.VCNL4200()
 
-f_x = (2.8 / 3.6736) * 320
-f_y = (2.8 / 2.7384) * 240
-c_x = 320 * 0.5
-c_y = 240 * 0.5
+f_x = (2.8 / 3.6736) * 160
+f_y = (2.8 / 2.7384) * 120
+c_x = 160 * 0.5
+c_y = 120 * 0.5
 
 lastpress = time.ticks_ms()
 btnpin = Pin("P0", Pin.IN, Pin.PULL_UP)
@@ -118,20 +118,21 @@ while running:
         b_led.on()
         img.draw_rectangle(tag.rect, color=(255, 0, 0))
         img.draw_cross(tag.cx, tag.cy, color=(0, 255, 0))
-        tx = translation_to_mm(tag.x_translation, conf["tagsize"]) - 100
-        ty = translation_to_mm(tag.y_translation, conf["tagsize"]) + 10
-        tz = -translation_to_mm(tag.z_translation, conf["tagsize"]) - 50
-        if -200 < tx < 200 and -200 < ty < 200 and 10 < tz < 500 and tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 300:
+        tx = tag.x_translation
+        ty = tag.y_translation
+        tz = tag.z_translation
+        txadj = translation_to_mm(tx, conf["tagsize"]) - 100 + conf["offset"][0]
+        tyadj = translation_to_mm(ty, conf["tagsize"]) + 10 + conf["offset"][1]
+        tzadj = -translation_to_mm(tz, conf["tagsize"]) - 50 + conf["offset"][2]
+        if tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 300:
             seen_tags.add(tag.id)
             s1.set_angle(90)
             s2.set_angle(135)
             time.sleep_ms(100)
             cal1 = get_all_measurements(as7265x)
-            txoff = tx + conf["offset"][0]
-            tyoff = ty + conf["offset"][1]
-            tzoff = tz + conf["offset"][2]
-            s1.set_angle((math.degrees(math.atan(tyoff / tzoff)) + 90))
-            s2.set_angle(180 - (math.degrees(math.atan(txoff / tzoff)) + 90))
+            print(txadj, tyadj, tzadj)
+            s1.set_angle((math.degrees(math.atan(tyadj / tzadj)) + 90))
+            s2.set_angle(180 - (math.degrees(math.atan(txadj / tzadj)) + 90))
             prox = ir_amb_sens.get_distance()
             amb = ir_amb_sens.get_ambient_light()
             time.sleep_ms(100)
