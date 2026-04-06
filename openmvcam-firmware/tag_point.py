@@ -46,8 +46,8 @@ def degrees(radians):
     return (180 * radians) / math.pi
 
 
-s1 = dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
-s2 = dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
+s1 = dfr180(1, 0.25, minlim=45, maxlim=140)  # P7
+s2 = dfr180(2, 0.25, minlim=45, maxlim=140)  # P8
 
 
 def tick_servos():
@@ -70,8 +70,8 @@ def translation_to_mm(translation, tag_size):
 time.sleep(1)
 
 s1.set_angle(90)
-s2.set_angle(135)
-s2.des_angle = 135
+s2.set_angle(140)
+s2.des_angle = 140
 
 tx = None
 while True:
@@ -102,8 +102,8 @@ while True:
         # txadj = 5.30481 * tx + 1.58621
         # tyadj = -5.19884 * ty - 1.13968
         # tzadj = -28.51334 * tz + 3.92978
-        txadj = translation_to_mm(tx, tagsizemm) - 100 + 40
-        tyadj = translation_to_mm(ty, tagsizemm) + 10 - 40
+        txadj = translation_to_mm(tx, tagsizemm) - 100 - 0
+        tyadj = translation_to_mm(ty, tagsizemm) + 10 + 40
         tzadj = -translation_to_mm(tz, tagsizemm) - 50
         print(txadj, tyadj, tzadj)
         s1.des_angle = (math.degrees(math.atan(tyadj / tzadj)) + 90)

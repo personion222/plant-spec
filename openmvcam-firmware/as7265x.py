@@ -51,27 +51,27 @@ def runExample():
             myAS7265x.get_calibrated_k(),
             myAS7265x.get_calibrated_l()))
 
-        # print(str(myAS7265x.get_calibrated_a()) + ",", end="")  # 410nm
-        # print(str(myAS7265x.get_calibrated_b()) + ",", end="")  # 435nm
-        # print(str(myAS7265x.get_calibrated_c()) + ",", end="")  # 460nm
-        # print(str(myAS7265x.get_calibrated_d()) + ",", end="")  # 485nm
-        # print(str(myAS7265x.get_calibrated_e()) + ",", end="")  # 510nm
-        # print(str(myAS7265x.get_calibrated_f()) + ",", end="")  # 535nm
+        print(str(myAS7265x.get_calibrated_a()) + ",", end="")  # 410nm
+        print(str(myAS7265x.get_calibrated_b()) + ",", end="")  # 435nm
+        print(str(myAS7265x.get_calibrated_c()) + ",", end="")  # 460nm
+        print(str(myAS7265x.get_calibrated_d()) + ",", end="")  # 485nm
+        print(str(myAS7265x.get_calibrated_e()) + ",", end="")  # 510nm
+        print(str(myAS7265x.get_calibrated_f()) + ",", end="")  # 535nm
 
-        # print(str(myAS7265x.get_calibrated_g()) + ",", end="")  # 560nm
-        # print(str(myAS7265x.get_calibrated_h()) + ",", end="")  # 585nm
-        # print(str(myAS7265x.get_calibrated_r()) + ",", end="")  # 610nm
-        # print(str(myAS7265x.get_calibrated_i()) + ",", end="")  # 645nm
-        # print(str(myAS7265x.get_calibrated_s()) + ",", end="")  # 680nm
-        # print(str(myAS7265x.get_calibrated_j()) + ",", end="")  # 705nm
+        print(str(myAS7265x.get_calibrated_g()) + ",", end="")  # 560nm
+        print(str(myAS7265x.get_calibrated_h()) + ",", end="")  # 585nm
+        print(str(myAS7265x.get_calibrated_r()) + ",", end="")  # 610nm
+        print(str(myAS7265x.get_calibrated_i()) + ",", end="")  # 645nm
+        print(str(myAS7265x.get_calibrated_s()) + ",", end="")  # 680nm
+        print(str(myAS7265x.get_calibrated_j()) + ",", end="")  # 705nm
 
-        # print(str(myAS7265x.get_calibrated_t()) + ",", end="")  # 730nm
-        # print(str(myAS7265x.get_calibrated_u()) + ",", end="")  # 760nm
-        # print(str(myAS7265x.get_calibrated_v()) + ",", end="")  # 810nm
-        # print(str(myAS7265x.get_calibrated_w()) + ",", end="")  # 860nm
-        # print(str(myAS7265x.get_calibrated_k()) + ",", end="")  # 900nm
-        # print(str(myAS7265x.get_calibrated_l()))  # 940nm
-        print(sum410535, sum560705, sum730940)
+        print(str(myAS7265x.get_calibrated_t()) + ",", end="")  # 730nm
+        print(str(myAS7265x.get_calibrated_u()) + ",", end="")  # 760nm
+        print(str(myAS7265x.get_calibrated_v()) + ",", end="")  # 810nm
+        print(str(myAS7265x.get_calibrated_w()) + ",", end="")  # 860nm
+        print(str(myAS7265x.get_calibrated_k()) + ",", end="")  # 900nm
+        print(str(myAS7265x.get_calibrated_l()))  # 940nm
+        # print(sum410535, sum560705, sum730940)
 
         if max(sum410535, sum560705, sum730940) == sum410535:
             if onled != 0:

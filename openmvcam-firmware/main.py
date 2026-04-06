@@ -25,24 +25,24 @@ def toggle_running(_):
 def get_all_measurements(board):
     board.take_measurements()
     return (
-        board.get_calibrated_a(),
-        board.get_calibrated_b(),
-        board.get_calibrated_c(),
-        board.get_calibrated_d(),
-        board.get_calibrated_e(),
-        board.get_calibrated_f(),
-        board.get_calibrated_g(),
-        board.get_calibrated_h(),
-        board.get_calibrated_r(),
-        board.get_calibrated_i(),
-        board.get_calibrated_s(),
-        board.get_calibrated_j(),
-        board.get_calibrated_t(),
-        board.get_calibrated_u(),
-        board.get_calibrated_v(),
-        board.get_calibrated_w(),
-        board.get_calibrated_k(),
-        board.get_calibrated_l()
+        board.get_a(),
+        board.get_b(),
+        board.get_c(),
+        board.get_d(),
+        board.get_e(),
+        board.get_f(),
+        board.get_g(),
+        board.get_h(),
+        board.get_r(),
+        board.get_i(),
+        board.get_s(),
+        board.get_j(),
+        board.get_t(),
+        board.get_u(),
+        board.get_v(),
+        board.get_w(),
+        board.get_k(),
+        board.get_l()
     )
 
 def translation_to_mm(translation, tag_size):
@@ -59,17 +59,17 @@ sensor.set_framesize(sensor.QQVGA)
 sensor.skip_frames(time=2000)
 sensor.set_auto_gain(False)  # must turn this off to prevent image washout...
 sensor.set_auto_whitebal(False)  # must turn this off to prevent image washout...
-# sensor.set_brightness(3)
+sensor.set_brightness(2)
 
-s1 = dfr180.dfr180(1, 0.25, minlim=45, maxlim=135)  # P7
-s2 = dfr180.dfr180(2, 0.25, minlim=45, maxlim=135)  # P8
+s1 = dfr180.dfr180(1, 0.25, minlim=40, maxlim=142)  # P7
+s2 = dfr180.dfr180(2, 0.25, minlim=40, maxlim=142)  # P8
 s1.set_angle(90)
 s2.set_angle(90)
 
 as7265x = qwiic_as7265x.QwiicAS7265x()
 as7265x.disable_indicator()
 as7265x.set_integration_cycles(conf["intcycles"])
-as7265x.set_gain(3)
+as7265x.set_gain(0)
 
 ir_amb_sens = vcnl4200.VCNL4200()
 
@@ -127,19 +127,21 @@ while running:
         if tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 300:
             seen_tags.add(tag.id)
             s1.set_angle(90)
-            s2.set_angle(135)
-            time.sleep_ms(100)
+            s2.set_angle(142)
+            time.sleep_ms(200)
             cal1 = get_all_measurements(as7265x)
             print(txadj, tyadj, tzadj)
             s1.set_angle((math.degrees(math.atan(tyadj / tzadj)) + 90))
             s2.set_angle(180 - (math.degrees(math.atan(txadj / tzadj)) + 90))
+            # s1.set_angle(90)
+            # s2.set_angle(90)
             prox = ir_amb_sens.get_distance()
             amb = ir_amb_sens.get_ambient_light()
-            time.sleep_ms(100)
+            time.sleep_ms(200)
             scan = get_all_measurements(as7265x)
             s1.set_angle(90)
-            s2.set_angle(135)
-            time.sleep_ms(100)
+            s2.set_angle(142)
+            time.sleep_ms(200)
             cal2 = get_all_measurements(as7265x)
             calavg = tuple((w1 + w2) / 2 for w1, w2 in zip(cal1, cal2))
             img.save(f"mission-{missionid}/pics/{tag.id}.jpg")
