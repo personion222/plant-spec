@@ -69,7 +69,7 @@ s2.set_angle(90)
 as7265x = qwiic_as7265x.QwiicAS7265x()
 as7265x.disable_indicator()
 as7265x.set_integration_cycles(conf["intcycles"])
-as7265x.set_gain(0)
+as7265x.set_gain(3)
 
 ir_amb_sens = vcnl4200.VCNL4200()
 
@@ -121,9 +121,9 @@ while running:
         tx = tag.x_translation
         ty = tag.y_translation
         tz = tag.z_translation
-        txadj = translation_to_mm(tx, conf["tagsize"]) - 100 + conf["offset"][0]
+        txadj = translation_to_mm(tx, conf["tagsize"]) - 110 + conf["offset"][0]
         tyadj = translation_to_mm(ty, conf["tagsize"]) + 10 + conf["offset"][1]
-        tzadj = -translation_to_mm(tz, conf["tagsize"]) - 50 + conf["offset"][2]
+        tzadj = -translation_to_mm(tz, conf["tagsize"]) + 50 + conf["offset"][2]
         if tag.id not in seen_tags and time.ticks_diff(time.ticks_ms(), lastnotag) > 300:
             seen_tags.add(tag.id)
             s1.set_angle(90)

@@ -102,9 +102,9 @@ while True:
         # txadj = 5.30481 * tx + 1.58621
         # tyadj = -5.19884 * ty - 1.13968
         # tzadj = -28.51334 * tz + 3.92978
-        txadj = translation_to_mm(tx, tagsizemm) - 100 - 0
-        tyadj = translation_to_mm(ty, tagsizemm) + 10 + 40
-        tzadj = -translation_to_mm(tz, tagsizemm) - 50
+        txadj = translation_to_mm(tx, tagsizemm) - 110 + 30
+        tyadj = translation_to_mm(ty, tagsizemm) + 10 - 30
+        tzadj = -translation_to_mm(tz, tagsizemm) + 50
         print(txadj, tyadj, tzadj)
         s1.des_angle = (math.degrees(math.atan(tyadj / tzadj)) + 90)
         s2.des_angle = 180 - (math.degrees(math.atan(txadj / tzadj)) + 90)
